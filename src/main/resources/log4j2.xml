@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010-2017 AdroitLogic Private Ltd. (http://adroitlogic.org). All Rights Reserved.
+  ~
+  ~ AdroitLogic PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+  -->
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config" shutdownHook="disable">
+    <Properties>
+        <Property name="log-path">logs</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingRandomAccessFile name="LOG_APPENDER" fileName="${log-path}/photoftp.log"
+                                 filePattern="${log-path}/$${date:yyyy-MM}/photoftp-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{ISO8601} [%X{ip}-%X{host}] [%t] [%X{xsn}-%X{xsv}] [%X{xc}] %5p %c{1} %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+
+        <Console name="CONSOLE_APPENDER" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ISO8601} [%t] [%X{xsn}-%X{xsv}] [%X{xc}] %5p %c{1} %m%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.cwidanage" level="DEBUG"/>
+        <Logger name="org.springframework.web" level="ERROR"/>
+
+        <Root level="ERROR">
+            <AppenderRef ref="LOG_APPENDER"/>
+            <AppenderRef ref="CONSOLE_APPENDER"/>
+        </Root>
+    </Loggers>
+</Configuration>
